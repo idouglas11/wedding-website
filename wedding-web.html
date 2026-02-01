@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isobel & Ruby — 08.01.2027</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&family=Plus+Jakarta+Sans:wght@200;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --glass: rgba(255, 255, 255, 0.03); 
+            --glass-border: rgba(255, 255, 255, 0.1); 
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #080808; 
+            color: #ffffff; 
+            margin: 0; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .heading { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Snap Scrolling Logic */
+        .snap-container { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+        section { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; overflow: hidden; }
+
+        .hero-bg {
+            background: 
+                linear-gradient(to bottom, rgba(8, 8, 8, 0.3), rgba(8, 8, 8, 0.9)), 
+                url('img.JPG');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .glass { 
+            background: var(--glass); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px); 
+            border: 1px solid var(--glass-border); 
+        }
+
+        /* Nav Links */
+        /* Desktop Styles (Default) */
+        .nav-link {
+            font-size: 13px;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 0.4em;
+            opacity: 0.5;
+            transition: all 0.4s ease;
+            white-space: nowrap; /* Prevents names like "RSVP" from breaking into two lines */
+        }
+
+        .nav-link:hover { 
+            opacity: 1; 
+            letter-spacing: 0.5em; 
+        }
+
+        /* Mobile Styles (iPhone & Small Screens) */
+        @media (max-width: 768px) {
+            .header-nav {
+                gap: 0.5rem !important; /* Forces a tiny gap for iPhone */
+                padding: 0 25px !important;
+            }
+            
+            .nav-link {
+                font-size: 9px;
+                letter-spacing: 0.1em; /* Tighter letters to save space */
+            }
+}
+
+        /* Continuous Glossy Ticker */
+        .ticker-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .ticker-content {
+            display: inline-block;
+            font-size: 8vw;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding-left: 100%;
+            animation: ticker 25s linear infinite;
+            color: transparent;
+            background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.3) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            opacity: 0.8;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+        }
+
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* Countdown */
+        .countdown-item { display: flex; flex-direction: column; align-items: center; min-width: 100px; }
+        .countdown-val { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 200; line-height: 1; letter-spacing: -0.05em; }
+        .countdown-label { font-size: 8px; text-transform: uppercase; letter-spacing: 0.4em; opacity: 0.3; margin-top: 1rem; }
+
+        .snap-container::-webkit-scrollbar { display: none; }
+        .snap-container { -ms-overflow-style: none; scrollbar-width: none; }
+
+        input, select { transition: border-color 0.3s ease; }
+        input:focus { border-color: rgba(255,255,255,0.5) !important; }
+    </style>
+</head>
+<body>
+
+<div class="snap-container">
+    
+    <section class="hero-bg" id="home">
+        <div class="absolute top-12 z-50 flex space-x-12">
+            <a href="#rsvp" class="nav-link">RSVP</a>
+            <a href="#where" class="nav-link">Where</a>
+            <a href="#soundtrack" class="nav-link">Playlist</a>
+            <a href="#gifts" class="nav-link">Gifts</a>
+            <a href="#attendees" class="nav-link">Guests</a>
+        </div>
+
+        <div class="ticker-container">
+            <div class="ticker-content heading">
+                Isobel & Ruby — 08.01.2027 — Tāmaki Makaurau, Aotearoa — Isobel & Ruby — 08.01.2027 — Tāmaki Makaurau, Aotearoa
+            </div>
+        </div>
+
+        <div class="absolute bottom-16 flex flex-col items-center z-20">
+            <p class="opacity-20 text-[9px] uppercase tracking-[1em]">Scroll to Enter</p>
+        </div>
+    </section>
+
+    <section class="bg-[#080808]" id="countdown">
+        <h2 class="heading text-[9px] uppercase tracking-[0.8em] opacity-30 mb-20">Counting Down</h2>
+        <div class="flex flex-wrap justify-center gap-8 md:gap-12">
+            <div class="countdown-item"><span id="days" class="countdown-val">00</span><span class="countdown-label">Days</span></div>
+            <div class="countdown-item"><span id="hours" class="countdown-val">00</span><span class="countdown-label">Hours</span></div>
+            <div class="countdown-item"><span id="minutes" class="countdown-val">00</span><span class="countdown-label">Minutes</span></div>
+            <div class="countdown-item"><span id="seconds" class="countdown-val">00</span><span class="countdown-label">Seconds</span></div>
+        </div>
+    </section>
+
+    <section class="bg-[#030303]" id="rsvp">
+        <div class="glass w-full max-w-md p-10 rounded-[2.5rem]">
+            <h2 class="heading text-2xl mb-10 tracking-[0.3em] uppercase font-light text-center">RSVP</h2>
+            <form id="rsvpForm" class="space-y-5">
+                <div>
+                    <label class="text-[9px] uppercase tracking-[0.3em] opacity-40 mb-1 block">Full Name</label>
+                    <input type="text" name="name" required placeholder="Name" class="w-full bg-transparent border-b border-white/10 py-2 outline-none font-light text-sm placeholder:opacity-20">
+                </div>
+                <div>
+                    <label class="text-[9px] uppercase tracking-[0.3em] opacity-40 mb-1 block">Email</label>
+                    <input type="email" name="email" required placeholder="Email" class="w-full bg-transparent border-b border-white/10 py-2 outline-none font-light text-sm placeholder:opacity-20">
+                </div>
+                <div>
+                    <label class="text-[9px] uppercase tracking-[0.3em] opacity-40 mb-1 block">Attendance</label>
+                    <select name="attendance" class="w-full bg-transparent border-b border-white/10 py-2 outline-none font-light text-sm appearance-none cursor-pointer">
+                        <option class="bg-[#080808]">Joyfully Accept</option>
+                        <option class="bg-[#080808]">Regretfully Decline</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[9px] uppercase tracking-[0.3em] opacity-40 mb-1 block">Dietary Requirements</label>
+                    <input type="text" name="dietary" placeholder="Vegan, GF, etc." class="w-full bg-transparent border-b border-white/10 py-2 outline-none font-light text-sm placeholder:opacity-20">
+                </div>
+                <div>
+                    <label class="text-[9px] uppercase tracking-[0.3em] opacity-40 mb-1 block">Song Request</label>
+                    <input type="text" name="song" placeholder="Artist - Track" class="w-full bg-transparent border-b border-white/10 py-2 outline-none font-light text-sm placeholder:opacity-20">
+                </div>
+                <button type="submit" id="submitBtn" class="w-full py-4 rounded-full mt-4 bg-white text-black hover:bg-neutral-200 transition-all duration-500 uppercase tracking-[0.4em] text-[9px] font-semibold">Submit Response</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="bg-[#080808]" id="where">
+        <div class="text-center mb-12">
+            <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-4">Location</h2>
+            <h3 class="heading text-4xl font-light tracking-tight">Morningside, Auckland, New Zealand</h3>
+            <p class="text-[10px] opacity-20 uppercase tracking-[0.4em] mt-2">36.8485° S, 174.7633° E</p>
+        </div>
+        <div class="glass max-w-2xl w-full p-12 rounded-[3rem] text-center">
+            <p class="font-light leading-relaxed opacity-60 text-sm md:text-base">
+                The celebration will be held in Morningside, Auckland where we both grew up. Please reach out to either of us if you would like accomodation reccomendations.
+            </p>
+            <div class="mt-10 pt-10 border-t border-white/5">
+                <p class="text-[10px] uppercase tracking-[0.5em] opacity-30 mb-4">Venue Details to Follow</p>
+                <a href="#" target="_blank" class="inline-block px-8 py-3 border border-white/10 rounded-full text-[9px] uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all">View Map</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="soundtrack">
+        <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-12">The Soundtrack</h2>
+        <div class="w-full max-w-2xl glass rounded-[32px] p-2 overflow-hidden shadow-2xl">
+            <iframe style="border-radius:24px" src="https://open.spotify.com/embed/playlist/59HAyZ4tQI678OFbR35ksp?utm_source=generator" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+    </section>
+
+    <section class="bg-[#080808]" id="gifts">
+        <h2 class="heading text-2xl mb-12 tracking-[0.4em] uppercase font-light">Giving</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl px-6">
+            <a href="https://www.map.org.uk/" target="_blank" class="glass p-8 rounded-[2rem] hover:bg-white/5 transition-all duration-500 text-center">
+                <h3 class="heading text-lg mb-2">Medical Aid for Palestinians</h3>
+                <p class="text-[10px] opacity-40 mb-4 font-light uppercase tracking-wider">Humanitarian Aid</p>
+                <span class="text-[8px] uppercase tracking-[0.4em] opacity-60">Donate →</span>
+            </a>
+            <a href="https://www.common-goal.org/" target="_blank" class="glass p-8 rounded-[2rem] hover:bg-white/5 transition-all duration-500 text-center">
+                <h3 class="heading text-lg mb-2">Common Goal</h3>
+                <p class="text-[10px] opacity-40 mb-4 font-light uppercase tracking-wider">Football Social Impact</p>
+                <span class="text-[8px] uppercase tracking-[0.4em] opacity-60">Donate →</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="bg-[#030303]" id="attendees">
+        <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-12 text-center">The Guestlist</h2>
+        <div id="names-grid" class="flex flex-wrap justify-center gap-x-8 gap-y-4 max-w-4xl px-10">
+            <p class="loading-text opacity-20 italic text-sm">Gathering the guestlist...</p>
+        </div>
+        <p class="absolute bottom-12 text-[8px] uppercase tracking-[0.4em] opacity-20">See you in Auckland</p>
+    </section>
+
+</div>
+
+<script>
+    // 1. CONFIGURATION
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyXCTNoYjmbxPYhsGa3CNhlb3kGxxfPnU4ubVpzjKHZnir13_gOYX1xHKGgHzLNTNSX/exec';
+    const form = document.getElementById('rsvpForm');
+    const btn = document.getElementById('submitBtn');
+    const grid = document.getElementById('names-grid');
+
+    // 2. RSVP SUBMISSION
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.innerHTML = "Sending...";
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                alert('Success! Your RSVP has been recorded.');
+                btn.disabled = false;
+                btn.innerHTML = "Submit Response";
+                form.reset();
+                loadGuestlist(); 
+            })
+            .catch(error => {
+                alert('Error submitting RSVP. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = "Submit Response";
+            });
+    });
+
+    // 3. FETCH GUESTLIST
+    async function loadGuestlist() {
+        if (!grid) return;
+        try {
+            const response = await fetch(scriptURL);
+            const data = await response.json();
+            if (data.names && data.names.length > 0) {
+                grid.innerHTML = '';
+                data.names.forEach((name, index) => {
+                    const span = document.createElement('span');
+                    span.className = "heading text-xl md:text-2xl font-light uppercase tracking-widest opacity-0 transition-opacity duration-1000";
+                    span.style.transitionDelay = `${index * 150}ms`;
+                    span.innerText = name;
+                    grid.appendChild(span);
+                    setTimeout(() => span.classList.replace('opacity-0', 'opacity-60'), 50);
+                });
+            } else {
+                grid.innerHTML = '<p class="opacity-20 text-[10px] uppercase tracking-widest italic text-center">The list is just beginning...</p>';
+            }
+        } catch (e) {
+            grid.innerHTML = '<p class="opacity-10 text-[10px]">Unable to load guestlist.</p>';
+        }
+    }
+
+    // 4. COUNTDOWN (Jan 8, 2027 @ 4:00 PM)
+    const weddingDate = new Date("Jan 8, 2027 16:00:00").getTime();
+    setInterval(function() {
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
+        document.getElementById("days").innerHTML = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+        document.getElementById("hours").innerHTML = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+        document.getElementById("minutes").innerHTML = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+        document.getElementById("seconds").innerHTML = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+    }, 1000);
+
+    // 5. INITIALIZE
+    window.onload = loadGuestlist;
+</script>
+
+</body>
+</html>
