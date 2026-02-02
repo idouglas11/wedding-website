@@ -27,11 +27,38 @@
         section { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; overflow: hidden; }
 
         .hero-bg {
-            background: 
-                linear-gradient(to bottom, rgba(8, 8, 8, 0.3), rgba(8, 8, 8, 0.9)), 
-                url('img.JPG');
+            background: #080808; /* Fallback color */
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Add these new classes for the slideshow */
+        .bg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-size: cover;
             background-position: center;
+            transition: opacity 2s ease-in-out; /* This creates the gentle fade */
+            z-index: 1;
+        }
+
+        /* Ensure the dark overlay stays on top of the images but behind the text */
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(8, 8, 8, 0.3), rgba(8, 8, 8, 0.9));
+            z-index: 2;
+        }
+
+        /* Push your content above the images */
+        .hero-bg > div {
+            z-index: 10;
         }
 
         .glass { 
@@ -120,6 +147,8 @@
 <div class="snap-container">
     
     <section class="hero-bg" id="home">
+        <div id="slideshow-container"></div>
+        <div class="hero-overlay"></div>
         <div class="absolute top-12 z-50 flex space-x-12">
             <a href="#rsvp" class="nav-link">RSVP</a>
             <a href="#where" class="nav-link">Where</a>
@@ -295,6 +324,54 @@
 
     // 5. INITIALIZE
     window.onload = loadGuestlist;
+
+    // 6. BACKGROUND SLIDESHOW LOGIC
+    const folder = 'images/';
+    const imageList = [];
+
+    // This loop automatically creates the list from 1.JPG to 17.JPG
+    for (let i = 1; i <= 17; i++) {
+        imageList.push(`${folder}${i}.JPG`);
+    }
+
+    let currentIndex = 0;
+
+    function startSlideshow() {
+        const container = document.getElementById('slideshow-container');
+        const layer1 = document.createElement('div');
+        const layer2 = document.createElement('div');
+        
+        layer1.className = 'bg-layer';
+        layer2.className = 'bg-layer';
+        layer2.style.opacity = '0';
+        
+        container.appendChild(layer1);
+        container.appendChild(layer2);
+
+        let activeLayer = layer1;
+        let inactiveLayer = layer2;
+
+        function changeBackground() {
+            if (imageList.length === 0) return;
+            
+            const nextImg = imageList[currentIndex];
+            inactiveLayer.style.backgroundImage = `url('${nextImg}')`;
+            inactiveLayer.style.opacity = '1';
+            activeLayer.style.opacity = '0';
+            
+            [activeLayer, inactiveLayer] = [inactiveLayer, activeLayer];
+            currentIndex = (currentIndex + 1) % imageList.length;
+        }
+
+        changeBackground(); 
+        setInterval(changeBackground, 5000); 
+    }
+
+    // Start immediately if images are defined
+    if (imageList.length > 0) {
+        startSlideshow();
+    }
+
 </script>
 
 </body>
