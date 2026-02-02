@@ -140,6 +140,53 @@
 
         input, select { transition: border-color 0.3s ease; }
         input:focus { border-color: rgba(255,255,255,0.5) !important; }
+
+
+        .rsvp-success { display:none; }
+        .rsvp-success.show { display:flex; }
+
+        .post-anim {
+            width: 120px;
+            height: 120px;
+        }
+
+        /* Draw effect */
+        .draw {
+            fill: none;
+            stroke: rgba(255,255,255,0.9);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 500;
+            stroke-dashoffset: 500;
+            animation: draw 900ms ease forwards;
+        }
+
+        /* Letter drop */
+        .letter {
+            fill: rgba(255,255,255,0.9);
+            transform: translateY(-18px);
+            opacity: 0;
+            animation: drop 900ms ease forwards;
+            animation-delay: 650ms;
+        }
+
+        .shine {
+            opacity: 0;
+            animation: pop 500ms ease forwards;
+            animation-delay: 1350ms;
+        }
+
+        @keyframes draw { to { stroke-dashoffset: 0; } }
+        @keyframes drop {
+            0% { transform: translateY(-22px); opacity: 0; }
+            35% { opacity: 1; }
+            100% { transform: translateY(10px); opacity: 0; }
+        }
+        @keyframes pop {
+            to { opacity: 0.9; }
+        }
+
     </style>
 </head>
 <body>
@@ -207,6 +254,30 @@
                 </div>
                 <button type="submit" id="submitBtn" class="w-full py-4 rounded-full mt-4 bg-white text-black hover:bg-neutral-200 transition-all duration-500 uppercase tracking-[0.4em] text-[9px] font-semibold">Submit Response</button>
             </form>
+             <!-- Success state (hidden until submit succeeds) -->
+            <div id="rsvpSuccess" class="rsvp-success flex-col items-center justify-center text-center gap-6 py-6">
+            <svg class="post-anim" viewBox="0 0 120 120" role="img" aria-label="Posted letter animation">
+                <!-- Postbox -->
+                <path class="draw" d="M40 52
+                                    Q60 36 80 52
+                                    L80 92
+                                    Q80 98 74 98
+                                    L46 98
+                                    Q40 98 40 92 Z"/>
+                <!-- Slot -->
+                <path class="draw" d="M50 62 L70 62"/>
+
+                <!-- Letter (drops into slot) -->
+                <rect class="letter" x="52" y="44" width="16" height="12" rx="2" />
+
+                <!-- Tiny confirmation spark -->
+                <path class="draw shine" d="M88 44 L92 48 L100 38" />
+            </svg>
+
+            <p class="heading text-[10px] uppercase tracking-[0.5em] opacity-70">
+                Your response has been sent
+            </p>
+            </div>
         </div>
     </section>
 
@@ -272,19 +343,26 @@
         e.preventDefault();
         btn.disabled = true;
         btn.innerHTML = "Sending...";
+
         fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-            .then(response => {
-                alert('Success! Your RSVP has been recorded.');
-                btn.disabled = false;
-                btn.innerHTML = "Submit Response";
-                form.reset();
-                loadGuestlist(); 
-            })
-            .catch(error => {
-                alert('Error submitting RSVP. Please try again.');
-                btn.disabled = false;
-                btn.innerHTML = "Submit Response";
-            });
+        .then(response => {
+            // alert('Success! Your RSVP has been recorded.');
+            btn.disabled = false;
+            btn.innerHTML = "Submit Response";
+
+            form.reset();
+            loadGuestlist();
+
+            // Show success animation/message instead of the form
+            form.classList.add('hidden');
+            const success = document.getElementById('rsvpSuccess');
+            if (success) success.classList.add('show');
+        })
+        .catch(error => {
+            alert('Error submitting RSVP. Please try again.');
+            btn.disabled = false;
+            btn.innerHTML = "Submit Response";
+        });
     });
 
     // 3. FETCH GUESTLIST
@@ -376,3 +454,5 @@
 
 </body>
 </html>
+
+
