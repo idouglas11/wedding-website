@@ -402,7 +402,7 @@
     });
 
     // 3. SLIDESHOW
-    const imageList = Array.from({length: 17}, (_, i) => `images/${i+1}.JPG`);
+    const imageList = Array.from({length: 16}, (_, i) => `images/${i+1}.JPG`);
     let currentIndex = 0;
 
     // Pre-load all images to prevent the "black blink" during transitions
@@ -447,6 +447,7 @@
             [active, inactive] = [inactive, active];
             
         }, 3000); // 5 second
+    }
 
     // 4. KINETIC MOUSE EFFECT
     document.addEventListener('mousemove', (e) => {
