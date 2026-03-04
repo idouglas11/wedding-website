@@ -23,8 +23,27 @@
         .heading { font-family: 'Plus Jakarta Sans', sans-serif; }
 
         /* Snap Scrolling Logic */
-        .snap-container { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; }
-        section { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; overflow: hidden; }
+        /* Update these in your <style> tag */
+        .snap-container { 
+            height: 100dvh; /* Use dynamic height for mobile address bars */
+            overflow-y: auto; 
+            scroll-snap-type: y mandatory; 
+            scroll-behavior: smooth; 
+            -webkit-overflow-scrolling: touch;
+        }
+
+        section { 
+            min-height: 100dvh; /* Allow section to grow if content is tall */
+            scroll-snap-align: start; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 60px 20px; /* More vertical padding for mobile breathability */
+            overflow: visible; /* CRITICAL: allow content to exist beyond the fold */
+        }
+
 
         .hero-bg { background: #080808; position: relative; overflow: hidden; }
 
@@ -85,14 +104,20 @@
         }
 
         /* Original Guestlist Styling */
+        /* Fix the Guestlist grid for mobile */
+        /* Restored to your original design */
         #names-grid {
-            display: flex; flex-wrap: wrap; justify-content: center;
-            gap: 1.5rem 3.5rem; max-width: 900px; margin: 0 auto;
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center;
+            gap: 1.5rem 3.5rem; 
+            max-width: 900px; 
+            margin: 0 auto;
         }
 
         .name-slot {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+            font-size: clamp(1.1rem, 2.5vw, 1.8rem); /* Back to your original sizing */
             font-weight: 200;
             text-transform: uppercase;
             letter-spacing: 0.5em;
@@ -103,7 +128,10 @@
             white-space: nowrap;
         }
 
-        .name-slot:hover { opacity: 1; letter-spacing: 0.6em; }
+        .name-slot:hover { 
+            opacity: 1; 
+            letter-spacing: 0.6em; 
+        }
 
         /* Countdown */
         .countdown-item { display: flex; flex-direction: column; align-items: center; min-width: 100px; }
@@ -155,7 +183,7 @@
     <section class="hero-bg" id="home">
         <div id="slideshow-container"></div>
         <div class="hero-overlay"></div>
-        <div class="absolute top-12 z-50 flex justify-center w-full space-x-6 md:space-x-12 px-4">
+       <div class="absolute top-12 z-50 flex flex-wrap justify-center w-full gap-x-4 gap-y-2 md:gap-x-12 px-4">
             <a href="#rsvp" class="nav-link">RSVP</a>
             <a href="#where" class="nav-link">Where</a>
             <a href="#soundtrack" class="nav-link">Playlist</a>
@@ -275,26 +303,31 @@
         </div>
     </section>
 
-    <section class="relative overflow-hidden bg-[#080808] flex flex-col items-center" id="gifts">
+   <section class="relative overflow-visible bg-[#080808] flex flex-col items-center justify-center min-h-[100dvh]" id="gifts">
         <div class="absolute inset-0 z-0">
             <div class="absolute inset-0 bg-cover bg-center scale-110 blur-sm opacity-40" 
                 style="background-image: url('fern.webp');"></div>
             <div class="absolute inset-0 bg-black/40"></div>
         </div>
 
-        <div class="relative z-10 text-center mb-16 px-6">
-            <h2 class="heading text-2xl tracking-[0.4em] uppercase font-light mb-8">Giving</h2>
-            <p class="max-w-xl mx-auto font-light leading-relaxed opacity-60 text-sm md:text-base">
+        <div class="relative z-10 text-center mb-10 md:mb-16 px-6">
+            <h2 class="heading text-xl md:text-2xl tracking-[0.4em] uppercase font-light mb-6 md:mb-8">Giving</h2>
+            <p class="max-w-xl mx-auto font-light leading-relaxed opacity-60 text-[11px] md:text-sm">
                 Having you there with us is more than enough. We’ve decided not to have a traditional gift registry; however, if you would like to contribute to our honeymoon fund, a portion of all gifts received will be donated to RainbowYOUTH.
             </p>
         </div>
 
         <div class="relative z-10 flex justify-center w-full max-w-3xl px-6">
-            <div class="glass p-10 rounded-[2.5rem] text-center flex flex-col items-center justify-center min-h-[250px] w-full max-w-sm">
-                <h3 class="heading text-xl mb-2 tracking-widest uppercase font-light">Rainbow YOUTH</h3>
+            <div class="glass p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] text-center flex flex-col items-center justify-center min-h-[220px] md:min-h-[250px] w-full max-w-sm">
+                <h3 class="heading text-lg md:text-xl mb-2 tracking-widest uppercase font-light text-white">RainbowYOUTH</h3>
+                
                 <a href="https://ry.org.nz/" target="_blank" class="text-[9px] uppercase tracking-[0.4em] text-white opacity-40 hover:opacity-100 transition-opacity mb-6">
                     Check it out →
                 </a>
+
+                <p class="text-[8px] md:text-[9px] opacity-20 uppercase tracking-[0.2em] leading-relaxed">
+                    Contributions can be made <br> on the day
+                </p>
             </div>
         </div>
     </section>
@@ -305,7 +338,7 @@
                 style="background-image: url('glasshouse_4.jpg');"></div>
             <div class="absolute inset-0 bg-black/40"></div>
         </div>
-        <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-16 text-center">The Guestlist</h2>
+        <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-16 text-center">We are excited to host...</h2>
         <div id="names-grid">
             <p class="loading-text opacity-20 italic text-sm">Gathering the guestlist...</p>
         </div>
