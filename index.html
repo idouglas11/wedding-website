@@ -373,22 +373,35 @@
     });
 
     // 3. SLIDESHOW
-    const imageList = Array.from({length: 14}, (_, i) => `images/${i+1}.JPG`);
+    const imageList = Array.from({length: 17}, (_, i) => `images/${i+1}.JPG`);
     let currentIndex = 0;
+
     function startSlideshow() {
         const container = document.getElementById('slideshow-container');
         if (!container) return;
-        const l1 = document.createElement('div'); const l2 = document.createElement('div');
-        l1.className = 'bg-layer'; l2.className = 'bg-layer'; l2.style.opacity = '0';
+        
+        const l1 = document.createElement('div'); 
+        const l2 = document.createElement('div');
+        
+        l1.className = 'bg-layer'; 
+        l2.className = 'bg-layer'; 
+        l2.style.opacity = '0';
+        
+        // --- CHANGE: Set the first image immediately so it's there on load ---
+        l1.style.backgroundImage = `url('${imageList[0]}')`;
+        currentIndex = 1; // Start the loop from the second image
+        
         container.append(l1, l2);
         let active = l1, inactive = l2;
         
         setInterval(() => {
             inactive.style.backgroundImage = `url('${imageList[currentIndex]}')`;
-            inactive.style.opacity = '1'; active.style.opacity = '0';
+            inactive.style.opacity = '1'; 
+            active.style.opacity = '0';
+            
             [active, inactive] = [inactive, active];
             currentIndex = (currentIndex + 1) % imageList.length;
-        }, 5000);
+        }, 3000);
     }
 
     // 4. KINETIC MOUSE EFFECT
