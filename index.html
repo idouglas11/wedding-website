@@ -257,7 +257,7 @@
                     The celebration will be held at Glasshouse Morningside in Auckland.<br>Please reach out if you need accommodation recommendations.
                 </p>
                 <div class="mt-10 pt-10 border-t border-white/5">
-                    <a href="https://goo.gl/maps/Hw1W4GqR9uN7Z6Xy8" target="_blank" class="inline-block px-8 py-3 border border-white/10 rounded-full text-[9px] uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all">View Map</a>
+                    <a href="https://www.google.com/maps/place/Glasshouse+Morningside/@-36.8754397,174.7367426,17z/data=!3m1!4b1!4m6!3m5!1s0x6d0d471054e80c29:0x9682a1fdcfcf088a!8m2!3d-36.8754397!4d174.7367426!16s%2Fg%2F11fjqxq_y7?entry=ttu&g_ep=EgoyMDI2MDMwMS4xIKXMDSoASAFQAw%3D%3D" target="_blank" class="inline-block px-8 py-3 border border-white/10 rounded-full text-[9px] uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all">View Map</a>
                 </div>
             </div>
         </div>
@@ -379,29 +379,38 @@
     function startSlideshow() {
         const container = document.getElementById('slideshow-container');
         if (!container) return;
-        
-        const l1 = document.createElement('div'); 
+
+        // Create two layers for the cross-fade
+        const l1 = document.createElement('div');
         const l2 = document.createElement('div');
         
-        l1.className = 'bg-layer'; 
-        l2.className = 'bg-layer'; 
+        l1.className = 'bg-layer';
+        l2.className = 'bg-layer';
         l2.style.opacity = '0';
-        
-        // --- CHANGE: Set the first image immediately so it's there on load ---
+
+        // Load the first image immediately so there is no black start
         l1.style.backgroundImage = `url('${imageList[0]}')`;
-        currentIndex = 1; // Start the loop from the second image
         
         container.append(l1, l2);
-        let active = l1, inactive = l2;
         
+        let active = l1;
+        let inactive = l2;
+
         setInterval(() => {
+            // 1. Move to the next index, wrapping back to 0 at the end
+            currentIndex = (currentIndex + 1) % imageList.length;
+            
+            // 2. Set the upcoming image on the hidden (inactive) layer
             inactive.style.backgroundImage = `url('${imageList[currentIndex]}')`;
-            inactive.style.opacity = '1'; 
+            
+            // 3. Swap opacities to create the cross-fade
+            inactive.style.opacity = '1';
             active.style.opacity = '0';
             
+            // 4. Swap the references so the layers trade roles for the next turn
             [active, inactive] = [inactive, active];
-            currentIndex = (currentIndex + 1) % imageList.length;
-        }, 3000);
+            
+        }, 5000); // 5 seconds
     }
 
     // 4. KINETIC MOUSE EFFECT
