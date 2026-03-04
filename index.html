@@ -405,6 +405,12 @@
     const imageList = Array.from({length: 17}, (_, i) => `images/${i+1}.JPG`);
     let currentIndex = 0;
 
+    // Pre-load all images to prevent the "black blink" during transitions
+    imageList.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+
     function startSlideshow() {
         const container = document.getElementById('slideshow-container');
         if (!container) return;
@@ -415,9 +421,10 @@
         
         l1.className = 'bg-layer';
         l2.className = 'bg-layer';
-        l2.style.opacity = '0';
+        l2.style.opacity = '1'; // Layer 1 starts visible
+        l2.style.opacity = '0'; // Layer 2 starts hidden
 
-        // Load the first image immediately so there is no black start
+        // Set the first image immediately
         l1.style.backgroundImage = `url('${imageList[0]}')`;
         
         container.append(l1, l2);
@@ -426,21 +433,20 @@
         let inactive = l2;
 
         setInterval(() => {
-            // 1. Move to the next index, wrapping back to 0 at the end
+            // Increment and wrap back to 0 exactly after the 17th image
             currentIndex = (currentIndex + 1) % imageList.length;
             
-            // 2. Set the upcoming image on the hidden (inactive) layer
+            // 1. Prepare the next image on the hidden layer
             inactive.style.backgroundImage = `url('${imageList[currentIndex]}')`;
             
-            // 3. Swap opacities to create the cross-fade
+            // 2. Cross-fade: Bring hidden layer to front, current layer to back
             inactive.style.opacity = '1';
             active.style.opacity = '0';
             
-            // 4. Swap the references so the layers trade roles for the next turn
+            // 3. Swap the variables for the next cycle
             [active, inactive] = [inactive, active];
             
-        }, 5000); // 5 seconds
-    }
+        }, 3000); // 5 second
 
     // 4. KINETIC MOUSE EFFECT
     document.addEventListener('mousemove', (e) => {
