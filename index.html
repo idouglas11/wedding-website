@@ -26,40 +26,21 @@
         .snap-container { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; }
         section { height: 100vh; scroll-snap-align: start; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; overflow: hidden; }
 
-        .hero-bg {
-            background: #080808; /* Fallback color */
-            position: relative;
-            overflow: hidden;
-        }
+        .hero-bg { background: #080808; position: relative; overflow: hidden; }
 
-        /* Add these new classes for the slideshow */
         .bg-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            transition: opacity 2s ease-in-out; /* This creates the gentle fade */
-            z-index: 1;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            transition: opacity 2s ease-in-out; z-index: 1;
         }
 
-        /* Ensure the dark overlay stays on top of the images but behind the text */
         .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, rgba(8, 8, 8, 0.3), rgba(8, 8, 8, 0.9));
             z-index: 2;
         }
 
-        /* Push your content above the images */
-        .hero-bg > div {
-            z-index: 10;
-        }
+        .hero-bg > div { z-index: 10; }
 
         .glass { 
             background: var(--glass); 
@@ -69,66 +50,60 @@
         }
 
         /* Nav Links */
-        /* Desktop Styles (Default) */
         .nav-link {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 300;
             text-transform: uppercase;
             letter-spacing: 0.4em;
             opacity: 0.5;
             transition: all 0.4s ease;
-            white-space: nowrap; /* Prevents names like "RSVP" from breaking into two lines */
+            white-space: nowrap;
         }
 
-        .nav-link:hover { 
-            opacity: 1; 
-            letter-spacing: 0.5em; 
-        }
+        .nav-link:hover { opacity: 1; letter-spacing: 0.5em; }
 
-        /* Mobile Styles (iPhone & Small Screens) */
         @media (max-width: 768px) {
-            .header-nav {
-                gap: 0.5rem !important; /* Forces a tiny gap for iPhone */
-                padding: 0 25px !important;
-            }
-            
-            .nav-link {
-                font-size: 9px;
-                letter-spacing: 0.1em; /* Tighter letters to save space */
-            }
-}
+            .nav-link { font-size: 9px; letter-spacing: 0.2em; }
+        }
 
         /* Continuous Glossy Ticker */
         .ticker-container {
-            width: 100%;
-            overflow: hidden;
-            white-space: nowrap;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 10;
+            width: 100%; overflow: hidden; white-space: nowrap;
+            position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
         }
 
         .ticker-content {
-            display: inline-block;
-            font-size: 8vw;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding-left: 100%;
-            animation: ticker 25s linear infinite;
-            color: transparent;
+            display: inline-block; font-size: 8vw; font-weight: 800; text-transform: uppercase;
+            animation: ticker 25s linear infinite; color: transparent;
             background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.3) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            opacity: 0.8;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+            -webkit-background-clip: text; background-clip: text; opacity: 0.8;
         }
 
         @keyframes ticker {
             0% { transform: translate3d(0, 0, 0); }
             100% { transform: translate3d(-100%, 0, 0); }
         }
+
+        /* Original Guestlist Styling */
+        #names-grid {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 1.5rem 3.5rem; max-width: 900px; margin: 0 auto;
+        }
+
+        .name-slot {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+            font-weight: 200;
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            color: white;
+            opacity: 0.5;
+            transition: opacity 0.5s ease, letter-spacing 0.5s ease;
+            cursor: default;
+            white-space: nowrap;
+        }
+
+        .name-slot:hover { opacity: 1; letter-spacing: 0.6em; }
 
         /* Countdown */
         .countdown-item { display: flex; flex-direction: column; align-items: center; min-width: 100px; }
@@ -141,52 +116,36 @@
         input, select { transition: border-color 0.3s ease; }
         input:focus { border-color: rgba(255,255,255,0.5) !important; }
 
-
-        .rsvp-success { display:none; }
-        .rsvp-success.show { display:flex; }
-
-        .post-anim {
-            width: 120px;
-            height: 120px;
+        /* --- RSVP Animation Restore (Corrected) --- */
+        .rsvp-success { 
+            display: none; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 1.5rem; 
+            text-align: center; 
+            padding: 1.5rem 0; /* This replaces the 'py-6' error */
         }
-
-        /* Draw effect */
-        .draw {
-            fill: none;
-            stroke: rgba(255,255,255,0.9);
-            stroke-width: 3;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: 500;
-            stroke-dashoffset: 500;
-            animation: draw 900ms ease forwards;
+        .rsvp-success.show { 
+            display: flex; 
         }
-
-        /* Letter drop */
-        .letter {
-            fill: rgba(255,255,255,0.9);
-            transform: translateY(-18px);
-            opacity: 0;
-            animation: drop 900ms ease forwards;
-            animation-delay: 650ms;
-        }
-
-        .shine {
-            opacity: 0;
-            animation: pop 500ms ease forwards;
-            animation-delay: 1350ms;
-        }
-
+        
+        .draw { fill: none; stroke: rgba(255,255,255,0.9); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 500; stroke-dashoffset: 500; animation: draw 900ms ease forwards; }
         @keyframes draw { to { stroke-dashoffset: 0; } }
+
+        .letter { fill: rgba(255,255,255,0.9); transform: translateY(-18px); opacity: 0; animation: drop 900ms ease forwards; animation-delay: 650ms;}
         @keyframes drop {
             0% { transform: translateY(-22px); opacity: 0; }
             35% { opacity: 1; }
             100% { transform: translateY(10px); opacity: 0; }
         }
-        @keyframes pop {
-            to { opacity: 0.9; }
-        }
 
+        .shine { opacity: 0; animation: pop 500ms ease forwards; animation-delay: 1350ms;}
+        @keyframes pop { to { opacity: 0.9; } }
+
+        /* Other Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-20px) rotate(2deg); } 66% { transform: translateY(10px) rotate(-1deg); } }
+        .float-animation { animation: float 8s ease-in-out infinite; }
     </style>
 </head>
 <body>
@@ -196,7 +155,7 @@
     <section class="hero-bg" id="home">
         <div id="slideshow-container"></div>
         <div class="hero-overlay"></div>
-        <div class="absolute top-12 z-50 flex space-x-12">
+        <div class="absolute top-12 z-50 flex justify-center w-full space-x-6 md:space-x-12 px-4">
             <a href="#rsvp" class="nav-link">RSVP</a>
             <a href="#where" class="nav-link">Where</a>
             <a href="#soundtrack" class="nav-link">Playlist</a>
@@ -206,7 +165,7 @@
 
         <div class="ticker-container">
             <div class="ticker-content heading">
-                Isobel & Ruby — 08.01.2027 — Tāmaki Makaurau, Aotearoa — Isobel & Ruby — 08.01.2027 — Tāmaki Makaurau, Aotearoa
+                Isobel & Ruby — 08.01.2027 — Tāmaki Makaurau — Isobel & Ruby — 08.01.2027 — Tāmaki Makaurau
             </div>
         </div>
 
@@ -215,7 +174,12 @@
         </div>
     </section>
 
-    <section class="bg-[#080808]" id="countdown">
+    <section class="relative overflow-hidden bg-[#080808]" id="countdown">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-cover bg-center scale-110 blur-sm opacity-40" 
+                style="background-image: url('glasshouse_3.jpg');"></div>
+            <div class="absolute inset-0 bg-black/40"></div>
+        </div>
         <h2 class="heading text-[9px] uppercase tracking-[0.8em] opacity-30 mb-20">Counting Down</h2>
         <div class="flex flex-wrap justify-center gap-8 md:gap-12">
             <div class="countdown-item"><span id="days" class="countdown-val">00</span><span class="countdown-label">Days</span></div>
@@ -225,9 +189,20 @@
         </div>
     </section>
 
-    <section class="bg-[#030303]" id="rsvp">
-        <div class="glass w-full max-w-md p-10 rounded-[2.5rem]">
-            <h2 class="heading text-2xl mb-10 tracking-[0.3em] uppercase font-light text-center">RSVP</h2>
+   <section class="relative overflow-hidden bg-[#080808]" id="rsvp">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-cover bg-center scale-110 blur-sm opacity-40" 
+                style="background-image: url('glasshouse_rsvp.jpg');"></div>
+            <div class="absolute inset-0 bg-black/40"></div>
+        </div>
+
+        <div class="glass w-full max-w-md p-10 rounded-[2.5rem] relative z-10">
+            <div class="text-center mb-10">
+            <h2 class="heading text-2xl tracking-[0.3em] uppercase font-light">RSVP</h2>
+            <p class="text-[9px] uppercase tracking-[0.3em] opacity-30 mt-2">
+                Closing September 30th 2026
+            </p>
+        </div>
             <form id="rsvpForm" class="space-y-5">
                 <div>
                     <label class="text-[9px] uppercase tracking-[0.3em] opacity-40 mb-1 block">Full Name</label>
@@ -254,294 +229,241 @@
                 </div>
                 <button type="submit" id="submitBtn" class="w-full py-4 rounded-full mt-4 bg-white text-black hover:bg-neutral-200 transition-all duration-500 uppercase tracking-[0.4em] text-[9px] font-semibold">Submit Response</button>
             </form>
-             <!-- Success state (hidden until submit succeeds) -->
-            <div id="rsvpSuccess" class="rsvp-success flex-col items-center justify-center text-center gap-6 py-6">
-            <svg class="post-anim" viewBox="0 0 120 120" role="img" aria-label="Posted letter animation">
-                <!-- Postbox -->
-                <path class="draw" d="M40 52
-                                    Q60 36 80 52
-                                    L80 92
-                                    Q80 98 74 98
-                                    L46 98
-                                    Q40 98 40 92 Z"/>
-                <!-- Slot -->
-                <path class="draw" d="M50 62 L70 62"/>
-
-                <!-- Letter (drops into slot) -->
-                <rect class="letter" x="52" y="44" width="16" height="12" rx="2" />
-
-                <!-- Tiny confirmation spark -->
-                <path class="draw shine" d="M88 44 L92 48 L100 38" />
-            </svg>
-
-            <p class="heading text-[10px] uppercase tracking-[0.5em] opacity-70">
-                Your response has been sent
-            </p>
+            
+            <div id="rsvpSuccess" class="rsvp-success">
+                <svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Posted letter animation">
+                    <path class="draw" d="M40 52 Q60 36 80 52 L80 92 Q80 98 74 98 L46 98 Q40 98 40 92 Z"/>
+                    <path class="draw" d="M50 62 L70 62"/>
+                    <rect class="letter" x="52" y="44" width="16" height="12" rx="2" />
+                    <path class="draw shine" d="M88 44 L92 48 L100 38" />
+                </svg>
+                <p class="heading text-[10px] uppercase tracking-[0.5em] opacity-70">
+                    Your response has been sent
+                </p>
             </div>
         </div>
     </section>
 
-    <section class="relative overflow-hidden bg-[#080808] py-24" id="where">
+    <section class="relative overflow-hidden bg-[#080808]" id="where">
         <div class="absolute inset-0 z-0">
-            <div 
-                class="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110 blur-sm opacity-40" 
-                style="background-image: url('glasshouse.jpg');">
-            </div>
+            <div class="absolute inset-0 bg-cover bg-center scale-110 blur-sm opacity-40" style="background-image: url('glasshouse.jpg');"></div>
             <div class="absolute inset-0 bg-black/40"></div>
         </div>
-
         <div class="relative z-10 flex flex-col items-center">
-            <div class="text-center mb-12">
-                <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-4">Location</h2>
-                <h3 class="heading text-4xl font-light tracking-tight text-white">Glasshouse Morningside</h3>
-                <p class="text-[10px] opacity-20 uppercase tracking-[0.4em] mt-2">36.8787° S, 174.7397° E</p>
-            </div>
-
-            <div class="glass max-w-2xl w-full p-12 rounded-[3rem] text-center backdrop-blur-sm bg-white/5 border border-white/10">
+            <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-4">Location</h2>
+            <h3 class="heading text-4xl font-light tracking-tight text-white mb-8">Glasshouse Morningside</h3>
+            <div class="glass max-w-2xl w-full p-12 rounded-[3rem] text-center backdrop-blur-sm">
                 <p class="font-light leading-relaxed opacity-60 text-sm md:text-base text-white">
-                    The celebration will be held at Glasshouse Morningside in Auckland.
-                    <br> Please reach out to either of us if you would like accommodation recommendations.
+                    The celebration will be held at Glasshouse Morningside in Auckland.<br>Please reach out if you need accommodation recommendations.
                 </p>
                 <div class="mt-10 pt-10 border-t border-white/5">
-                    <a href="https://maps.app.goo.gl/Uv7A7qH18X7vS4Z6A" target="_blank" class="inline-block px-8 py-3 border border-white/10 rounded-full text-[9px] uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all text-white">View Map</a>
+                    <a href="https://goo.gl/maps/Hw1W4GqR9uN7Z6Xy8" target="_blank" class="inline-block px-8 py-3 border border-white/10 rounded-full text-[9px] uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all">View Map</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="soundtrack">
+    <section class="relative overflow-hidden bg-[#080808]" id="soundtrack">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-cover bg-center scale-110 blur-sm opacity-40" 
+                style="background-image: url('P.jpeg');"></div>
+            <div class="absolute inset-0 bg-black/40"></div>
+        </div>
         <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-12">The Soundtrack</h2>
         <div class="w-full max-w-2xl glass rounded-[32px] p-2 overflow-hidden shadow-2xl">
             <iframe style="border-radius:24px" src="https://open.spotify.com/embed/playlist/59HAyZ4tQI678OFbR35ksp?utm_source=generator" width="100%" height="380" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
     </section>
 
-    <section class="bg-[#080808]" id="gifts">
-        <h2 class="heading text-2xl mb-12 tracking-[0.4em] uppercase font-light">Giving</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl px-6">
-            <a href="https://www.map.org.uk/" target="_blank" class="glass p-8 rounded-[2rem] hover:bg-white/5 transition-all duration-500 text-center">
-                <h3 class="heading text-lg mb-2">Medical Aid for Palestinians</h3>
-                <p class="text-[10px] opacity-40 mb-4 font-light uppercase tracking-wider">Humanitarian Aid</p>
-                <span class="text-[8px] uppercase tracking-[0.4em] opacity-60">Donate →</span>
-            </a>
-            <a href="https://www.common-goal.org/" target="_blank" class="glass p-8 rounded-[2rem] hover:bg-white/5 transition-all duration-500 text-center">
-                <h3 class="heading text-lg mb-2">Common Goal</h3>
-                <p class="text-[10px] opacity-40 mb-4 font-light uppercase tracking-wider">Football Social Impact</p>
-                <span class="text-[8px] uppercase tracking-[0.4em] opacity-60">Donate →</span>
-            </a>
+    <section class="relative overflow-hidden bg-[#080808] flex flex-col items-center" id="gifts">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-cover bg-center scale-110 blur-sm opacity-40" 
+                style="background-image: url('fern.webp');"></div>
+            <div class="absolute inset-0 bg-black/40"></div>
+        </div>
+
+        <div class="relative z-10 text-center mb-16 px-6">
+            <h2 class="heading text-2xl tracking-[0.4em] uppercase font-light mb-8">Giving</h2>
+            <p class="max-w-xl mx-auto font-light leading-relaxed opacity-60 text-sm md:text-base">
+                Having you there with us is more than enough. We’ve decided not to have a traditional gift registry; however, if you would like to contribute to our honeymoon fund, a portion of all gifts received will be donated to RainbowYOUTH.
+            </p>
+        </div>
+
+        <div class="relative z-10 flex justify-center w-full max-w-3xl px-6">
+            <div class="glass p-10 rounded-[2.5rem] text-center flex flex-col items-center justify-center min-h-[250px] w-full max-w-sm">
+                <h3 class="heading text-xl mb-2 tracking-widest uppercase font-light">Rainbow YOUTH</h3>
+                <a href="https://ry.org.nz/" target="_blank" class="text-[9px] uppercase tracking-[0.4em] text-white opacity-40 hover:opacity-100 transition-opacity mb-6">
+                    Check it out →
+                </a>
+            </div>
         </div>
     </section>
 
-    <section class="bg-[#030303]" id="attendees">
-        <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-12 text-center">The Guestlist</h2>
-        <div id="names-grid" class="flex flex-wrap justify-center gap-x-8 gap-y-4 max-w-4xl px-10">
+    <section class="relative overflow-hidden bg-[#080808]" id="attendees">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-cover bg-center scale-110 blur-sm opacity-40" 
+                style="background-image: url('glasshouse_4.jpg');"></div>
+            <div class="absolute inset-0 bg-black/40"></div>
+        </div>
+        <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-16 text-center">The Guestlist</h2>
+        <div id="names-grid">
             <p class="loading-text opacity-20 italic text-sm">Gathering the guestlist...</p>
         </div>
         <p class="absolute bottom-12 text-[8px] uppercase tracking-[0.4em] opacity-20">See you in Auckland</p>
     </section>
 
-<section class="relative h-screen bg-[#080808] flex items-center justify-center overflow-hidden border-t border-white/5" id="credits">
-    
-    <div class="absolute w-[500px] h-[500px] bg-white/5 rounded-full blur-[120px] animate-pulse"></div>
-
-    <div id="kinetic-container" class="relative z-10 transition-transform duration-700 ease-out">
-        <div class="float-animation">
-            <p class="text-[14px] md:text-[18px] uppercase tracking-[0.6em] text-white/20 font-light text-center select-none">
-                Website built <br class="md:hidden"> and designed by 
-                <span class="block mt-4 text-white opacity-100 tracking-[0.8em] font-medium italic">
-                    ISOBEL
-                </span>
-            </p>
+   <section class="relative overflow-hidden bg-[#080808] cursor-pointer" id="credits">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-cover bg-center scale-110 blur-sm opacity-40" 
+                style="background-image: url('tawha.jpeg');"></div>
+            <div class="absolute inset-0 bg-black/40"></div>
         </div>
-    </div>
+        
+        <div id="kinetic-container" class="relative z-10 transition-transform duration-700 ease-out flex flex-col items-center">
+            <div class="float-animation">
+                <p id="exploding-text" class="text-[8px] md:text-[9px] uppercase tracking-[0.4em] text-white/20 font-light text-center select-none whitespace-nowrap">
+                    Website built and designed by 
+                    <span class="inline-block ml-[2px] text-white opacity-100 tracking-[0.4em] font-medium italic text-[7px] md:text-[8px]">ISOBEL</span>
+                </p>
+            </div>
+        </div>
 
-    <div class="absolute top-12 left-12 w-4 h-4 border-t border-l border-white/10"></div>
-    <div class="absolute bottom-12 right-12 w-4 h-4 border-b border-r border-white/10"></div>
-</section>
-
-<style>
-/* Dreamy Floating Animation */
-@keyframes float {
-    0% { transform: translateY(0px) rotate(0deg); }
-    33% { transform: translateY(-20px) rotate(2deg); }
-    66% { transform: translateY(10px) rotate(-1deg); }
-    100% { transform: translateY(0px) rotate(0deg); }
-}
-
-.float-animation {
-    animation: float 8s ease-in-out infinite;
-}
-
-/* Smooth transition for the mouse evasion */
-#kinetic-container {
-    will-change: transform;
-}
-</style>
+        <a href="#home" class="absolute bottom-12 z-20 text-[8px] uppercase tracking-[0.8em] opacity-20 hover:opacity-100 hover:tracking-[1em] transition-all duration-700 ease-in-out">
+            Back to Top
+        </a>
+    </section>
+</div>
 
 <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbz3ZOBTaDrlhlqDdpkgTtuAhOA0rVFa9EhSQdk0Mvolh8qY70HW3OsMKmkCv2pE085p/exec";
     const container = document.getElementById('kinetic-container');
-    
-    // Mouse Evasion Logic
-    document.addEventListener('mousemove', (e) => {
-        const { clientX, clientY } = e;
-        const { left, top, width, height } = container.getBoundingClientRect();
-        
-        // Find the center of the text
-        const centerX = left + width / 2;
-        const centerY = top + height / 2;
-        
-        // Calculate distance between mouse and text center
-        const dx = clientX - centerX;
-        const dy = clientY - centerY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        // If mouse is within 300px, push the text away
-        if (distance < 300) {
-            const force = (300 - distance) / 20; // Intensity of the push
-            const moveX = (dx / distance) * -force * 15;
-            const moveY = (dy / distance) * -force * 15;
-            
-            container.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        } else {
-            // Return to center when mouse is far
-            container.style.transform = `translate(0px, 0px)`;
-        }
-    });
 
-    // Touch support for mobile
-    document.addEventListener('touchmove', (e) => {
-        const touch = e.touches[0];
-        const { left, top, width, height } = container.getBoundingClientRect();
-        const dx = touch.clientX - (left + width / 2);
-        const dy = touch.clientY - (top + height / 2);
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 200) {
-            container.style.transform = `translate(${(dx/distance) * -30}px, ${(dy/distance) * -30}px)`;
-        }
-    });
-
-    // 1. CONFIGURATION
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzo8h_jaYAjlQ6Y14L3sK15h11loZ-jZ2UTww5ogGdC6p5MWDNwjAo29wbKvKc_NfPw/exec';
-    const form = document.getElementById('rsvpForm');
-    const btn = document.getElementById('submitBtn');
-    const grid = document.getElementById('names-grid');
-
-    // 2. RSVP SUBMISSION
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-        btn.disabled = true;
-        btn.innerHTML = "Sending...";
-
-        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {
-            // alert('Success! Your RSVP has been recorded.');
-            btn.disabled = false;
-            btn.innerHTML = "Submit Response";
-
-            form.reset();
-            loadGuestlist();
-
-            // Show success animation/message instead of the form
-            form.classList.add('hidden');
-            const success = document.getElementById('rsvpSuccess');
-            if (success) success.classList.add('show');
-        })
-        .catch(error => {
-            alert('Error submitting RSVP. Please try again.');
-            btn.disabled = false;
-            btn.innerHTML = "Submit Response";
-        });
-    });
-
-    // 3. FETCH GUESTLIST
+    // 1. GUESTLIST FETCH
     async function loadGuestlist() {
+        const grid = document.getElementById('names-grid');
         if (!grid) return;
         try {
-            const response = await fetch(scriptURL);
+            const response = await fetch(scriptURL + '?nocache=' + new Date().getTime());
             const data = await response.json();
             if (data.names && data.names.length > 0) {
                 grid.innerHTML = '';
-                data.names.forEach((name, index) => {
+                data.names.forEach((name) => {
                     const span = document.createElement('span');
-                    span.className = "heading text-xl md:text-2xl font-light uppercase tracking-widest opacity-0 transition-opacity duration-1000";
-                    span.style.transitionDelay = `${index * 150}ms`;
+                    span.className = "name-slot";
                     span.innerText = name;
                     grid.appendChild(span);
-                    setTimeout(() => span.classList.replace('opacity-0', 'opacity-60'), 50);
                 });
             } else {
-                grid.innerHTML = '<p class="opacity-20 text-[10px] uppercase tracking-widest italic text-center">The list is just beginning...</p>';
+                grid.innerHTML = '<p class="opacity-20 italic uppercase tracking-widest text-[10px]">The list is growing...</p>';
             }
-        } catch (e) {
-            grid.innerHTML = '<p class="opacity-10 text-[10px]">Unable to load guestlist.</p>';
-        }
+        } catch (e) { grid.innerHTML = 'Error loading names.'; }
     }
 
-    // 4. COUNTDOWN (Jan 8, 2027 @ 4:00 PM)
-    const weddingDate = new Date("Jan 8, 2027 16:00:00").getTime();
-    setInterval(function() {
-        const now = new Date().getTime();
-        const distance = weddingDate - now;
-        document.getElementById("days").innerHTML = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-        document.getElementById("hours").innerHTML = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-        document.getElementById("minutes").innerHTML = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-        document.getElementById("seconds").innerHTML = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
-    }, 1000);
+    // 2. RSVP SUBMISSION
+    document.getElementById('rsvpForm').addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true; btn.innerHTML = "Sending...";
+        fetch(scriptURL, { method: 'POST', body: new FormData(e.target)})
+        .then(() => {
+            e.target.classList.add('hidden');
+            document.getElementById('rsvpSuccess').classList.add('show');
+            loadGuestlist();
+        });
+    });
 
-    // 5. INITIALIZE
-    window.onload = loadGuestlist;
-
-    // 6. BACKGROUND SLIDESHOW LOGIC
-    const folder = 'images/';
-    const imageList = [];
-
-    // This loop automatically creates the list from 1.JPG to 17.JPG
-    for (let i = 1; i <= 17; i++) {
-        imageList.push(`${folder}${i}.JPG`);
-    }
-
+    // 3. SLIDESHOW
+    const imageList = Array.from({length: 14}, (_, i) => `images/${i+1}.JPG`);
     let currentIndex = 0;
-
     function startSlideshow() {
         const container = document.getElementById('slideshow-container');
-        const layer1 = document.createElement('div');
-        const layer2 = document.createElement('div');
+        if (!container) return;
+        const l1 = document.createElement('div'); const l2 = document.createElement('div');
+        l1.className = 'bg-layer'; l2.className = 'bg-layer'; l2.style.opacity = '0';
+        container.append(l1, l2);
+        let active = l1, inactive = l2;
         
-        layer1.className = 'bg-layer';
-        layer2.className = 'bg-layer';
-        layer2.style.opacity = '0';
-        
-        container.appendChild(layer1);
-        container.appendChild(layer2);
-
-        let activeLayer = layer1;
-        let inactiveLayer = layer2;
-
-        function changeBackground() {
-            if (imageList.length === 0) return;
-            
-            const nextImg = imageList[currentIndex];
-            inactiveLayer.style.backgroundImage = `url('${nextImg}')`;
-            inactiveLayer.style.opacity = '1';
-            activeLayer.style.opacity = '0';
-            
-            [activeLayer, inactiveLayer] = [inactiveLayer, activeLayer];
+        setInterval(() => {
+            inactive.style.backgroundImage = `url('${imageList[currentIndex]}')`;
+            inactive.style.opacity = '1'; active.style.opacity = '0';
+            [active, inactive] = [inactive, active];
             currentIndex = (currentIndex + 1) % imageList.length;
-        }
-
-        changeBackground(); 
-        setInterval(changeBackground, 5000); 
+        }, 5000);
     }
 
-    // Start immediately if images are defined
-    if (imageList.length > 0) {
-        startSlideshow();
-    }
+    // 4. KINETIC MOUSE EFFECT
+    document.addEventListener('mousemove', (e) => {
+        if (!container) return;
+        const { left, top, width, height } = container.getBoundingClientRect();
+        const dx = e.clientX - (left + width / 2);
+        const dy = e.clientY - (top + height / 2);
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 300) {
+            const force = (300 - distance) / 20;
+            container.style.transform = `translate(${(dx/distance) * -force * 15}px, ${(dy/distance) * -force * 15}px)`;
+        } else container.style.transform = `translate(0px, 0px)`;
+    });
 
+    // 5. COUNTDOWN
+    const weddingDate = new Date("Jan 8, 2027 17:00:00").getTime();
+    setInterval(() => {
+        const now = new Date().getTime();
+        const dist = weddingDate - now;
+        if (dist < 0) return;
+        document.getElementById("days").innerText = Math.floor(dist / 86400000).toString().padStart(2, '0');
+        document.getElementById("hours").innerText = Math.floor((dist % 86400000) / 3600000).toString().padStart(2, '0');
+        document.getElementById("minutes").innerText = Math.floor((dist % 3600000) / 60000).toString().padStart(2, '0');
+        document.getElementById("seconds").innerText = Math.floor((dist % 60000) / 1000).toString().padStart(2, '0');
+    }, 1000);
+
+    // --- EXPLODING LETTERS EFFECT ---
+    const creditsSection = document.getElementById('credits');
+    const textContainer = document.getElementById('exploding-text');
+
+    const prepareText = () => {
+        const specialSpan = textContainer.querySelector('span');
+        const isobelText = specialSpan.innerText;
+        // Get text excluding the span
+        const mainText = textContainer.childNodes[0].textContent;
+
+        const mainWrapped = mainText.split('').map(char => 
+            `<span class="letter-unit inline-block transition-all duration-[2000ms] ease-in-out" style="letter-spacing: inherit;">${char === ' ' ? '&nbsp;' : char}</span>`
+        ).join('');
+
+        const isobelWrapped = isobelText.split('').map(char => 
+            `<span class="letter-unit inline-block transition-all duration-[2000ms] ease-in-out" style="letter-spacing: inherit;">${char === ' ' ? '&nbsp;' : char}</span>`
+        ).join('');
+
+        textContainer.innerHTML = `${mainWrapped}<span class="${specialSpan.className}">${isobelWrapped}</span>`;
+    };
+
+    prepareText();
+
+    let isExploded = false;
+    creditsSection.addEventListener('click', () => {
+        if (isExploded) return;
+        isExploded = true;
+
+        const letters = document.querySelectorAll('.letter-unit');
+        letters.forEach(letter => {
+            const randomY = Math.random() * 500 + 400; 
+            const randomX = (Math.random() - 0.5) * 500; 
+            const randomRot = (Math.random() - 0.5) * 450; 
+            
+            letter.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRot}deg)`;
+            letter.style.opacity = '0';
+        });
+
+        setTimeout(() => {
+            letters.forEach(letter => {
+                letter.style.transform = `translate(0, 0) rotate(0deg)`;
+                letter.style.opacity = '';
+            });
+            setTimeout(() => { isExploded = false; }, 2000);
+        }, 2500); 
+    });
+    window.onload = () => { startSlideshow(); loadGuestlist(); };
 </script>
 
 </body>
 </html>
-
-
