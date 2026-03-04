@@ -103,27 +103,42 @@
             100% { transform: translate3d(-100%, 0, 0); }
         }
 
-        /* Original Guestlist Styling */
-        /* Fix the Guestlist grid for mobile */
-        /* Restored to your original design */
+        /* Update these in your <style> tag */
+        #attendees {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; 
+            /* Reduced top padding from 15vh to 80px to close the gap */
+            padding-top: 80px; 
+            padding-bottom: 60px;
+        }
+
         #names-grid {
             display: flex; 
             flex-wrap: wrap; 
             justify-content: center;
-            gap: 1.5rem 3.5rem; 
-            max-width: 900px; 
+            align-content: flex-start;
+            /* Reduced gaps to fit more names vertically */
+            gap: 0.8rem 1.5rem; 
+            max-width: 1000px; 
             margin: 0 auto;
+            padding: 10px 20px;
+            /* Let the container expand but allow scrolling if it hits the bottom */
+            flex-grow: 1;
+            overflow-y: visible;
         }
 
         .name-slot {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: clamp(1.1rem, 2.5vw, 1.8rem); /* Back to your original sizing */
+            /* Font-size will be set by JavaScript */
             font-weight: 200;
             text-transform: uppercase;
-            letter-spacing: 0.5em;
+            letter-spacing: 0.4em;
             color: white;
             opacity: 0.5;
-            transition: opacity 0.5s ease, letter-spacing 0.5s ease;
+            transition: all 0.5s ease;
             cursor: default;
             white-space: nowrap;
         }
@@ -328,17 +343,26 @@
         </div>
     </section>
 
-    <section class="relative overflow-hidden bg-[#080808]" id="attendees">
+   <section class="relative bg-[#080808] flex flex-col items-center" id="attendees">
         <div class="absolute inset-0 z-0">
             <div class="absolute inset-0 bg-cover bg-center scale-110 blur-sm opacity-40" 
                 style="background-image: url('glasshouse_4.jpg');"></div>
             <div class="absolute inset-0 bg-black/40"></div>
         </div>
-        <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-16 text-center">We are excited to host...</h2>
-        <div id="names-grid">
-            <p class="loading-text opacity-20 italic text-sm">Gathering the guestlist...</p>
+        
+        <div class="relative z-10 w-full max-w-5xl flex flex-col items-center">
+            <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-8 text-center">
+                We are excited to host...
+            </h2>
+            
+            <div id="names-grid" class="mb-12">
+                <p class="loading-text opacity-20 italic text-sm">Gathering the guestlist...</p>
+            </div>
+
+            <p class="text-[8px] uppercase tracking-[0.4em] opacity-20 mb-10">
+                See you in Auckland
+            </p>
         </div>
-        <p class="absolute bottom-12 text-[8px] uppercase tracking-[0.4em] opacity-20">See you in Auckland</p>
     </section>
 
    <section class="relative overflow-hidden bg-[#080808] cursor-pointer" id="credits">
@@ -368,18 +392,35 @@
     const container = document.getElementById('kinetic-container');
 
     // 1. GUESTLIST FETCH
-    async function loadGuestlist() {
+   async function loadGuestlist() {
         const grid = document.getElementById('names-grid');
         if (!grid) return;
         try {
             const response = await fetch(scriptURL + '?nocache=' + new Date().getTime());
             const data = await response.json();
+            
             if (data.names && data.names.length > 0) {
                 grid.innerHTML = '';
+                const count = data.names.length;
+
+                // DYNAMIC FONT CALCULATION
+                // Start at 1.8rem (for few guests) and shrink down to ~0.7rem (for 100+ guests)
+                let dynamicSize = 1.8;
+                if (count > 20) dynamicSize = 1.5;
+                if (count > 40) dynamicSize = 1.2;
+                if (count > 60) dynamicSize = 1.0;
+                if (count > 80) dynamicSize = 0.8;
+                if (count > 100) dynamicSize = 0.7;
+
+                // On mobile, we want to scale it down even further
+                const isMobile = window.innerWidth < 768;
+                const finalSize = isMobile ? dynamicSize * 0.7 : dynamicSize;
+
                 data.names.forEach((name) => {
                     const span = document.createElement('span');
                     span.className = "name-slot";
                     span.innerText = name;
+                    span.style.fontSize = `${finalSize}rem`; // Set the calculated size
                     grid.appendChild(span);
                 });
             } else {
@@ -387,7 +428,6 @@
             }
         } catch (e) { grid.innerHTML = 'Error loading names.'; }
     }
-
     // 2. RSVP SUBMISSION
     document.getElementById('rsvpForm').addEventListener('submit', e => {
         e.preventDefault();
