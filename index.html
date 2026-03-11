@@ -33,24 +33,35 @@
         }
 
         section { 
-            min-height: 100dvh; /* Allow section to grow if content is tall */
+            min-height: 100dvh; 
             scroll-snap-align: start; 
             position: relative; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             justify-content: center; 
-            padding: 60px 20px; /* More vertical padding for mobile breathability */
-            overflow: visible; /* CRITICAL: allow content to exist beyond the fold */
+            padding: 60px 20px;
+            /* This prevents the blurred/scaled background from leaking into other sections */
+            overflow: hidden !important; 
         }
 
+        /* Ensure the background containers don't escape their parent */
+        .absolute.inset-0.z-0 {
+            clip-path: inset(0);
+        }
 
         .hero-bg { background: #080808; position: relative; overflow: hidden; }
 
         .bg-layer {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-size: cover; background-position: center;
-            transition: opacity 2s ease-in-out; z-index: 1;
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background-size: cover; 
+            background-position: center;
+            transition: opacity 2s ease-in-out; /* Keep this at 2s or less */
+            z-index: 1;
         }
 
         .hero-overlay {
@@ -201,6 +212,7 @@
        <div class="absolute top-12 z-50 flex flex-wrap justify-center w-full gap-x-4 gap-y-2 md:gap-x-12 px-4">
             <a href="#rsvp" class="nav-link">RSVP</a>
             <a href="#where" class="nav-link">Where</a>
+            <a href="#details-cards" class="nav-link">Details</a>
             <a href="#soundtrack" class="nav-link">Playlist</a>
             <a href="#gifts" class="nav-link">Gifts</a>
             <a href="#attendees" class="nav-link">Guests</a>
@@ -283,6 +295,10 @@
                 <p class="heading text-[10px] uppercase tracking-[0.5em] opacity-70">
                     Your response has been sent
                 </p>
+                
+                <button type="button" onclick="resetRSVP()" class="mt-4 px-6 py-2 border border-white/10 rounded-full text-[8px] uppercase tracking-[0.3em] opacity-40 hover:opacity-100 hover:bg-white hover:text-black transition-all">
+                    Submit Another Response
+                </button>
             </div>
         </div>
     </section>
@@ -302,6 +318,56 @@
                 <div class="mt-10 pt-10 border-t border-white/5">
                     <a href="https://www.google.com/maps/place/Glasshouse+Morningside/@-36.8754397,174.7367426,17z/data=!3m1!4b1!4m6!3m5!1s0x6d0d471054e80c29:0x9682a1fdcfcf088a!8m2!3d-36.8754397!4d174.7367426!16s%2Fg%2F11fjqxq_y7?entry=ttu&g_ep=EgoyMDI2MDMwMS4xIKXMDSoASAFQAw%3D%3D" target="_blank" class="inline-block px-8 py-3 border border-white/10 rounded-full text-[9px] uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all">View Map</a>
                 </div>
+            </div>
+        </div>
+    </section>
+
+   <section class="relative bg-[#080808]" id="details-cards">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-cover bg-center scale-110 blur-sm opacity-30" 
+                style="background-image: url('discoball.png');"></div>
+            <div class="absolute inset-0 bg-black/50"></div>
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center px-6 max-w-7xl mx-auto w-full">
+            <h2 class="heading text-[10px] uppercase tracking-[0.8em] opacity-30 mb-12">Event Details</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+                
+                <div class="glass p-10 md:p-12 rounded-[2.5rem] text-center flex flex-col items-center justify-between min-h-[350px]">
+                    <h3 class="text-[10px] uppercase tracking-[0.4em] mb-8 opacity-40 text-white">Timings</h3>
+                    <div class="space-y-4 font-light text-sm tracking-widest text-white/80">
+                        <p>4:00 PM — Arrivals</p>
+                        <p>4:30 PM — Ceremony</p>
+                        <p class="opacity-50 italic">Reception to follow</p>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-white/5 w-full">
+                        <span class="text-[9px] uppercase tracking-[0.2em] opacity-30 text-white italic">Auckland (NZT)</span>
+                    </div>
+                </div>
+
+                <div class="glass p-10 md:p-12 rounded-[2.5rem] text-center flex flex-col items-center justify-between min-h-[350px]">
+                    <h3 class="text-[10px] uppercase tracking-[0.4em] mb-8 opacity-40 text-white">Dress Code</h3>
+                    <div class="flex flex-col items-center">
+                        <p class="text-2xl md:text-3xl font-light tracking-tight text-white mb-2 leading-tight">Colourful<br>Semi-Formal</p>
+                        <p class="text-[9px] uppercase tracking-[0.2em] opacity-40 text-white mt-2">Wear something fun</p>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-white/5 w-full">
+                        <span class="text-[9px] uppercase tracking-[0.2em] opacity-30 text-white">Suit or Cocktail</span>
+                    </div>
+                </div>
+
+                <div class="glass p-10 md:p-12 rounded-[2.5rem] text-center flex flex-col items-center justify-between min-h-[350px]">
+                    <h3 class="text-[10px] uppercase tracking-[0.4em] mb-8 opacity-40 text-white">Attendance</h3>
+                    <div class="flex flex-col items-center px-4">
+                        <p class="text-sm font-light leading-relaxed text-white/80 mb-2">Strictly by invitation only</p>
+                        <p class="text-[10px] uppercase tracking-[0.2em] opacity-40 text-white">No Plus Ones</p>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-white/5 w-full">
+                        <span class="text-[9px] uppercase tracking-[0.2em] opacity-30 text-white italic">RSVP by September 30th</span>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -441,6 +507,23 @@
         });
     });
 
+    function resetRSVP() {
+        const form = document.getElementById('rsvpForm');
+        const success = document.getElementById('rsvpSuccess');
+        const btn = document.getElementById('submitBtn');
+
+        // 1. Hide success animation & show form
+        success.classList.remove('show');
+        form.classList.remove('hidden');
+
+        // 2. Reset the form fields
+        form.reset();
+
+        // 3. Reset the submit button state
+        btn.disabled = false;
+        btn.innerHTML = "Submit Response";
+    }
+
     // 3. SLIDESHOW
     const imageList = Array.from({length: 16}, (_, i) => `images/${i+1}.JPG`);
     let currentIndex = 0;
@@ -461,32 +544,41 @@
         
         l1.className = 'bg-layer';
         l2.className = 'bg-layer';
-        l2.style.opacity = '1'; // Layer 1 starts visible
-        l2.style.opacity = '0'; // Layer 2 starts hidden
-
-        // Set the first image immediately
+        
+        // START STATE: 
+        // Layer 1 is visible with the first image.
+        // Layer 2 is hidden but ALREADY loaded with the second image.
         l1.style.backgroundImage = `url('${imageList[0]}')`;
+        l1.style.opacity = '1';
+        
+        l2.style.backgroundImage = `url('${imageList[1]}')`;
+        l2.style.opacity = '0';
         
         container.append(l1, l2);
         
         let active = l1;
         let inactive = l2;
+        currentIndex = 0; // Reset to start
 
         setInterval(() => {
-            // Increment and wrap back to 0 exactly after the 17th image
-            currentIndex = (currentIndex + 1) % imageList.length;
-            
-            // 1. Prepare the next image on the hidden layer
-            inactive.style.backgroundImage = `url('${imageList[currentIndex]}')`;
-            
-            // 2. Cross-fade: Bring hidden layer to front, current layer to back
-            inactive.style.opacity = '1';
+            // 1. Fade the active one out and the prepared inactive one in
             active.style.opacity = '0';
-            
-            // 3. Swap the variables for the next cycle
+            inactive.style.opacity = '1';
+
+            // 2. Swap the references
             [active, inactive] = [inactive, active];
-            
-        }, 3000); // 5 second
+
+            // 3. Increment index for the NEXT image (the one that will stay hidden for now)
+            currentIndex = (currentIndex + 1) % imageList.length;
+            const nextIndex = (currentIndex + 1) % imageList.length;
+
+            // 4. Update the hidden layer with the image for the NEXT transition
+            // Wrap this in a small timeout to ensure it doesn't swap while still fading out
+            setTimeout(() => {
+                inactive.style.backgroundImage = `url('${imageList[nextIndex]}')`;
+            }, 2000); // Wait for the 2s transition to finish before changing the hidden URL
+
+        }, 4000); // 4 seconds total (2s stable + 2s transition)
     }
 
     // 4. KINETIC MOUSE EFFECT
