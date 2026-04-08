@@ -125,20 +125,34 @@
             padding-top: 80px; 
             padding-bottom: 60px;
         }
+        /* Find #exploding-text in your style block and update/add these */
+        #exploding-text {
+            display: block;
+            width: 100%;
+            max-width: 90vw; /* Keeps it from hitting screen edges */
+            margin: 0 auto;
+            white-space: normal; /* Allows wrapping on very small screens to prevent truncation */
+            line-height: 1.6;
+        }
+
+.float-animation {
+    animation: float 8s ease-in-out infinite;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
 
         #names-grid {
             display: flex; 
             flex-wrap: wrap; 
             justify-content: center;
-            align-content: flex-start;
-            /* Reduced gaps to fit more names vertically */
-            gap: 0.8rem 1.5rem; 
+            align-items: center; /* Add this to keep names vertically centered as they shrink */
+            align-content: center; /* Changed from flex-start to keep the block centered */
+            gap: 0.5rem 1rem; /* Tightened the gap for better density on mobile */
             max-width: 1000px; 
             margin: 0 auto;
             padding: 10px 20px;
-            /* Let the container expand but allow scrolling if it hits the bottom */
             flex-grow: 1;
-            overflow-y: visible;
         }
 
         .name-slot {
@@ -448,9 +462,11 @@
         
         <div id="kinetic-container" class="relative z-10 transition-transform duration-700 ease-out flex flex-col items-center">
             <div class="float-animation">
+                <!-- Locate this in your #credits section -->
                 <p id="exploding-text" class="text-[8px] md:text-[9px] uppercase tracking-[0.4em] text-white/20 font-light text-center select-none whitespace-nowrap">
                     Website built and designed by 
-                    <span class="inline-block ml-[2px] text-white opacity-100 tracking-[0.4em] font-medium italic text-[7px] md:text-[8px]">ISOBEL</span>
+                    <!-- Added 'heading' class back to restore Plus Jakarta Sans -->
+                    <span class="heading inline-block ml-[2px] text-white opacity-100 tracking-[0.2em] md:tracking-[0.4em] font-medium italic text-[7px] md:text-[8px]">ISOBEL</span>
                 </p>
             </div>
         </div>
@@ -466,7 +482,7 @@
     const container = document.getElementById('kinetic-container');
 
     // 1. GUESTLIST FETCH
-   async function loadGuestlist() {
+    async function loadGuestlist() {
         const grid = document.getElementById('names-grid');
         if (!grid) return;
         try {
@@ -477,24 +493,22 @@
                 grid.innerHTML = '';
                 const count = data.names.length;
 
-                // DYNAMIC FONT CALCULATION
-                // Start at 1.8rem (for few guests) and shrink down to ~0.7rem (for 100+ guests)
-                let dynamicSize = 1.8;
-                if (count > 20) dynamicSize = 1.5;
-                if (count > 40) dynamicSize = 1.2;
-                if (count > 60) dynamicSize = 1.0;
-                if (count > 80) dynamicSize = 0.8;
-                if (count > 100) dynamicSize = 0.7;
-
-                // On mobile, we want to scale it down even further
+                // DYNAMIC CALCULATION:
+                // We use clamp() to keep the text between a readable minimum (0.6rem) 
+                // and a nice maximum (1.8rem). 
+                // The middle value reduces as the count increases.
+                const baseSize = Math.max(0.6, 2.5 - (count * 0.015)); 
                 const isMobile = window.innerWidth < 768;
-                const finalSize = isMobile ? dynamicSize * 0.7 : dynamicSize;
+                const finalSize = isMobile ? baseSize * 0.8 : baseSize;
 
                 data.names.forEach((name) => {
                     const span = document.createElement('span');
-                    span.className = "name-slot";
+                    // Added 'flex-shrink' and 'text-center' logic via classes
+                    span.className = "name-slot flex-shrink-1 text-center";
                     span.innerText = name;
-                    span.style.fontSize = `${finalSize}rem`; // Set the calculated size
+                    
+                    // Use clamp to ensure it never gets too microscopic or too huge
+                    span.style.fontSize = `clamp(0.65rem, ${finalSize}vw, 1.8rem)`;
                     grid.appendChild(span);
                 });
             } else {
@@ -621,7 +635,6 @@
     const prepareText = () => {
         const specialSpan = textContainer.querySelector('span');
         const isobelText = specialSpan.innerText;
-        // Get text excluding the span
         const mainText = textContainer.childNodes[0].textContent;
 
         const mainWrapped = mainText.split('').map(char => 
@@ -632,7 +645,8 @@
             `<span class="letter-unit inline-block transition-all duration-[2000ms] ease-in-out" style="letter-spacing: inherit;">${char === ' ' ? '&nbsp;' : char}</span>`
         ).join('');
 
-        textContainer.innerHTML = `${mainWrapped}<span class="${specialSpan.className}">${isobelWrapped}</span>`;
+        // Ensure the container span has 'inline-block' to prevent layout collapsing
+        textContainer.innerHTML = `${mainWrapped}<span class="${specialSpan.className} inline-block" style="white-space: nowrap;">${isobelWrapped}</span>`;
     };
 
     prepareText();
