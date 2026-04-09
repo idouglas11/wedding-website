@@ -135,12 +135,12 @@
             line-height: 1.6;
         }
 
-.float-animation {
-    animation: float 8s ease-in-out infinite;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
+        .float-animation {
+            animation: float 8s ease-in-out infinite;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
 
         #names-grid {
             display: flex; 
@@ -478,6 +478,9 @@
 </div>
 
 <script>
+    const imageList = Array.from({length: 13}, (_, i) => `images/${i+1}.JPG`);
+    imageList.forEach(src => { const img = new Image(); img.src = src; });
+
     const scriptURL = "https://script.google.com/macros/s/AKfycbzxKdYYAuVsUz3fTmhWScZ3S6w0hSyt1kGKSOzalSQ_WgYyh0V8FquvBUAYB6p9zP2d/exec";
     const container = document.getElementById('kinetic-container');
 
@@ -547,60 +550,62 @@
     }
 
     // 3. SLIDESHOW
-    const imageList = Array.from({length: 16}, (_, i) => `images/${i+1}.JPG`);
-    let currentIndex = 0;
+    // const imageList = Array.from({length: 16}, (_, i) => `images/${i+1}.JPG`);
+    // let currentIndex = 0;
 
-    // Pre-load all images to prevent the "black blink" during transitions
-    imageList.forEach(src => {
-        const img = new Image();
-        img.src = src;
-    });
+    // // Pre-load all images to prevent the "black blink" during transitions
+    // imageList.forEach(src => {
+    //     const img = new Image();
+    //     img.src = src;
+    // });
 
     function startSlideshow() {
         const container = document.getElementById('slideshow-container');
         if (!container) return;
 
-        // Create two layers for the cross-fade
-        const l1 = document.createElement('div');
-        const l2 = document.createElement('div');
-        
-        l1.className = 'bg-layer';
-        l2.className = 'bg-layer';
-        
-        // START STATE: 
-        // Layer 1 is visible with the first image.
-        // Layer 2 is hidden but ALREADY loaded with the second image.
-        l1.style.backgroundImage = `url('${imageList[0]}')`;
-        l1.style.opacity = '1';
-        
-        l2.style.backgroundImage = `url('${imageList[1]}')`;
-        l2.style.opacity = '0';
-        
-        container.append(l1, l2);
-        
-        let active = l1;
-        let inactive = l2;
-        currentIndex = 0; // Reset to start
+        // base: always visible at opacity 1 — black can never show through
+        // top: fades in on top, then resets invisibly
+        const base = document.createElement('div');
+        const top  = document.createElement('div');
+        base.className = 'bg-layer';
+        top.className  = 'bg-layer';
+        base.style.opacity = '1';
+        top.style.opacity  = '0';
+        container.append(base, top);
 
-        setInterval(() => {
-            // 1. Fade the active one out and the prepared inactive one in
-            active.style.opacity = '0';
-            inactive.style.opacity = '1';
+        let currentIndex = 0;
 
-            // 2. Swap the references
-            [active, inactive] = [inactive, active];
+        const firstImage = new Image();
+        firstImage.onload = () => {
+            base.style.backgroundImage = `url('${imageList[0]}')`;
+            top.style.backgroundImage  = `url('${imageList[1]}')`;
 
-            // 3. Increment index for the NEXT image (the one that will stay hidden for now)
-            currentIndex = (currentIndex + 1) % imageList.length;
-            const nextIndex = (currentIndex + 1) % imageList.length;
+            let nextIndex = 1;
 
-            // 4. Update the hidden layer with the image for the NEXT transition
-            // Wrap this in a small timeout to ensure it doesn't swap while still fading out
-            setTimeout(() => {
-                inactive.style.backgroundImage = `url('${imageList[nextIndex]}')`;
-            }, 2000); // Wait for the 2s transition to finish before changing the hidden URL
+            setInterval(() => {
+                // Fade the next image in on top
+                top.style.opacity = '1';
 
-        }, 4000); // 4 seconds total (2s stable + 2s transition)
+                setTimeout(() => {
+                    // Snap base to match, then instantly hide top (no visible change)
+                    base.style.backgroundImage = top.style.backgroundImage;
+                    top.style.transition = 'none';
+                    top.style.opacity = '0';
+
+                    // Re-enable transition for next cycle
+                    requestAnimationFrame(() => requestAnimationFrame(() => {
+                        top.style.transition = '';
+                    }));
+
+                    // Pre-load the image after next into the top layer
+                    currentIndex = nextIndex;
+                    nextIndex = (currentIndex + 1) % imageList.length;
+                    top.style.backgroundImage = `url('${imageList[nextIndex]}')`;
+                }, 2000); // wait for fade to complete
+
+            }, 4000);
+        };
+        firstImage.src = imageList[0];
     }
 
     // 4. KINETIC MOUSE EFFECT
