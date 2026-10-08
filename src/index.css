@@ -279,3 +279,135 @@ input:focus {
   33% { transform: translateY(-20px) rotate(2deg); }
   66% { transform: translateY(10px) rotate(-1deg); }
 }
+/* ---------- Name poll ---------- */
+.poll-drift { animation: drift 24s ease-in-out infinite alternate; }
+@keyframes drift {
+  from { transform: scale(1.1) translate(-1.5%, -1%); }
+  to { transform: scale(1.2) translate(1.5%, 1%); }
+}
+
+.poll-card { animation: pollIn 1s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes pollIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+.poll-word {
+  display: inline-block;
+  animation: wordIn 0.9s cubic-bezier(.2,.8,.2,1) both;
+  animation-delay: calc(0.2s + var(--w) * 0.12s);
+}
+@keyframes wordIn {
+  from { opacity: 0; transform: translateY(14px); filter: blur(6px); letter-spacing: 0.6em; }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+
+@font-face {
+  font-family: 'IzzyHand2';
+  src: url('/IzzyHand2.ttf') format('truetype');
+  font-display: swap;
+}
+
+.poll-stage { position: relative; height: 330px; }
+.poll-fade { animation: fadeUp 0.7s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* option list */
+.opt-list { list-style: none; margin: 0; padding: 0; }
+.opt {
+  position: relative;
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%;
+  padding: 20px 4px;
+  background: none; border: 0; color: #fff; cursor: pointer;
+  font-size: 15px; letter-spacing: 0.4em; text-transform: uppercase; font-weight: 300;
+  text-align: left;
+  animation: optIn 0.8s cubic-bezier(.2,.8,.2,1) both;
+  animation-delay: calc(0.5s + var(--n) * 0.12s);
+  transition: padding 0.4s cubic-bezier(.2,.8,.2,1), letter-spacing 0.4s;
+}
+@keyframes optIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: none; } }
+.opt::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: rgba(255,255,255,0.35);
+  transform-origin: left;
+  animation: drawLine 0.9s cubic-bezier(.2,.8,.2,1) both;
+  animation-delay: calc(0.6s + var(--n) * 0.12s);
+}
+@keyframes drawLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.opt svg { opacity: 0; transform: translateX(-10px); transition: 0.4s cubic-bezier(.2,.8,.2,1); }
+.opt:hover, .opt:focus-visible { padding-left: 16px; letter-spacing: 0.5em; outline: none; }
+.opt:hover svg, .opt:focus-visible svg { opacity: 1; transform: none; }
+.opt:hover::after { background: #fff; }
+.opt.picked { padding-left: 16px; }
+.opt.gone { opacity: 0; transform: translateX(30px); transition: 0.5s ease; pointer-events: none; }
+
+/* paper + box */
+.paper-wrap {
+  position: absolute; left: 50%; top: 6px;
+  width: 240px; height: 140px; margin-left: -120px;
+  z-index: 1;
+  animation: paperIn 0.7s cubic-bezier(.2,.9,.3,1.2) both;
+}
+.paper-wrap.dropping { animation: paperDrop 1s cubic-bezier(.55,0,.8,.5) forwards; }
+@keyframes paperIn { from { opacity: 0; transform: translateY(-30px) rotate(-8deg) scale(0.8); } to { opacity: 1; transform: rotate(-2deg); } }
+@keyframes paperDrop {
+  0% { transform: rotate(-2deg); }
+  25% { transform: translateY(-8px) rotate(2deg) scale(0.98); }
+  100% { transform: translateY(205px) rotate(-3deg) scale(0.55); }
+}
+.paper-wrap > svg:not(.pencil) { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.paper-text { position: absolute; inset: 0; padding: 26px 14px 0; text-align: center; white-space: nowrap; color: #fff; font-family: 'IzzyHand2', cursive; }
+.paper-text small { display: block; font-size: 17px; opacity: 0.6; }
+.paper-name {
+  display: inline-block; font-size: 42px; line-height: 1.1;
+  clip-path: inset(-10% 100% -10% 0);
+  animation: write 1.4s 0.5s cubic-bezier(.4,0,.3,1) forwards;
+}
+@keyframes write { to { clip-path: inset(-10% 0 -10% 0); } }
+.pencil {
+  position: absolute; top: 58px; left: 18px; width: 40px; height: 40px;
+  animation: pencil 1.4s 0.5s cubic-bezier(.4,0,.3,1) both;
+  pointer-events: none;
+}
+@keyframes pencil {
+  0% { transform: translate(0, 0) rotate(0); opacity: 0; }
+  5% { opacity: 1; }
+  25% { transform: translate(40px, -6px) rotate(-6deg); }
+  50% { transform: translate(85px, 4px) rotate(4deg); }
+  75% { transform: translate(120px, -4px) rotate(-4deg); }
+  95% { opacity: 1; }
+  100% { transform: translate(150px, 0) rotate(0); opacity: 0; }
+}
+.draw-path { stroke-dasharray: 600; stroke-dashoffset: 600; animation: dash 1.1s cubic-bezier(.4,0,.2,1) forwards; }
+@keyframes dash { to { stroke-dashoffset: 0; } }
+
+.ballot-box { position: absolute; left: 50%; bottom: 0; width: 190px; height: 130px; margin-left: -95px; z-index: 2; animation: fadeUp 0.7s 0.2s both; }
+.ballot-box svg { overflow: visible; }
+.ballot-box.thunk { animation: thunk 0.6s 0.85s cubic-bezier(.3,1.6,.5,1); }
+@keyframes thunk { 0% { transform: none; } 30% { transform: translateY(6px) scaleY(0.95); } 60% { transform: translateY(-3px); } 100% { transform: none; } }
+
+/* results */
+.res-row { position: relative; padding: 14px 0 12px; animation: optIn 0.7s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--n) * 0.1s); }
+.res-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; letter-spacing: 0.35em; text-transform: uppercase; font-weight: 300; }
+.res-head b { font-weight: 600; letter-spacing: 0.1em; font-size: 15px; }
+.res-head small { opacity: 0.5; font-size: 9px; margin-left: 8px; letter-spacing: 0.15em; }
+.res-bar { height: 12px; margin-top: 10px; border: 1px solid rgba(255,255,255,0.4); border-radius: 6px 8px 7px 9px / 8px 6px 9px 7px; overflow: hidden; }
+.res-fill {
+  height: 100%; width: 0;
+  background: repeating-linear-gradient(-45deg, rgba(255,255,255,0.7) 0 1px, transparent 1px 6px);
+  transition: width 1.4s cubic-bezier(.2,.9,.2,1);
+}
+.res-row.lead .res-bar { border-color: #fff; }
+.res-row.lead .res-fill { background: repeating-linear-gradient(-45deg, #fff 0 1.5px, transparent 1.5px 5px); animation: hatch 2s linear infinite; background-size: 7px 7px; }
+@keyframes hatch { to { background-position: 14px 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .poll-drift, .res-row.lead .res-fill { animation: none; }
+}
+
+@media (max-width: 400px) {
+  .opt { font-size: 13px; letter-spacing: 0.28em; }
+  .opt:hover, .opt:focus-visible { letter-spacing: 0.34em; }
+  .res-head { font-size: 11px; letter-spacing: 0.22em; }
+  }

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Hero from './components/Hero'
 import Countdown from './components/Countdown'
 import RSVP from './components/RSVP'
+import NamePoll from './components/NamePoll'
 import Where from './components/Where'
 import Details from './components/Details'
 import Soundtrack from './components/Soundtrack'
@@ -17,6 +18,7 @@ export default function App() {
       <Hero />
       <Countdown />
       <RSVP onSubmitSuccess={() => setGuestlistRefresh(n => n + 1)} />
+      <NamePoll />
       <Where />
       <Details />
       <Soundtrack />
